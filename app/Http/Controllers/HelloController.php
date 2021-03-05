@@ -6,23 +6,34 @@ use Illuminate\Http\Request;
 use  App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
+
 class HelloController extends Controller
 {
   
-   public function index()
-   {
-      $data =[
-        ['name' => 'たろう', 'mail' => 'taro@yamada'],
-        ['name' => 'はなこはなこ', 'mail' => 'hanako@yamada'],
-        ['name' => 'jirou', 'mail' => 'jiro@yamada'],
-      ];
-      return view('hello.index',['message' => 'コントローラから' , 'data' => $data]);
-   }
+    public function index(Request $request)
+    {
+        return view('hello.index', ['msg' => 'フォームを入力：']);
+    }
+    public function message(Request $request)
+    {
+        return view('hello.message', ['msg' => 'フォームを入力：']);
+    }
+    public function error(Request $request)
+    {
+        return view('hello.error', ['msg' => 'フォームを入力：']);
+    }
 
    public function post(Request $request)
    {
-       $input = $request->input;
-      
-       return view('hello.index', ['msg' =>  $input ]);
+       $validate_rule = [
+           'name' => ['required'],
+           'mail' => ['email'],
+           'age' => ['numeric', 'between:0,150' ],
+       ];
+       $this->validate($request, $validate_rule);
+       return view('hello.index', ['msg' => '正しく入力されました']);
    }
+
+  
+
 }
