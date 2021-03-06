@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 
 use Illuminate\Support\Facades\View;
 use App\Http\Composers\HelloComposer;
+use Validator;
+use App\Http\validators\HelloValidator;
 
 
 class HelloServiceProvider extends ServiceProvider
@@ -33,9 +35,15 @@ class HelloServiceProvider extends ServiceProvider
         //     }
         // );
 
-        View::composer(
-            'hello.index', HelloComposer::class
-        );
+
+        // View::composer(
+        //     'hello.index', HelloComposer::class
+        // );
+
+        $validator = $this->app['validator'];
+        $validator->resolver(function($translator, $data, $rules, $messages) {
+            return new HelloValidator($translator, $data, $rules, $messages);
+        });
 
     }
 }
