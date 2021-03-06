@@ -40,9 +40,13 @@ class HelloServiceProvider extends ServiceProvider
         //     'hello.index', HelloComposer::class
         // );
 
-        $validator = $this->app['validator'];
-        $validator->resolver(function($translator, $data, $rules, $messages) {
-            return new HelloValidator($translator, $data, $rules, $messages);
+        // $validator = $this->app['validator'];
+        // $validator->resolver(function($translator, $data, $rules, $messages) {
+        //     return new HelloValidator($translator, $data, $rules, $messages);
+        // });
+
+        Validator::extend('hello', function($attribute, $value, $parameters, $validator) {
+            return $value % 2 == 0;
         });
 
     }
