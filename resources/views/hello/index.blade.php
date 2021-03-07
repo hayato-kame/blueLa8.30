@@ -12,20 +12,20 @@
 
 
 @section('content')
-    
-<p> {{$msg}} </p>
+
 
 <form action="/hello" method="post">
     @csrf
     <table>
-        @if ($errors->has('msg'))
-        <tr><th>ERROR</th><td>{{$errors->first('msg')}}</td></tr>
-        @endif
+        <tr><th>Name</th><th>Mail</th><th>Age</th></tr>
 
-        <tr><th>Message: </th><td><input type="text" name="msg" 
-            value="{{old('msg')}}"></td></tr>
-        
-        <tr><th></th><td><input type="submit" value="send"></td></tr>
+        @foreach ($items as $item)
+        <tr><td>{{$item->name}}</td>
+            <td>{{$item->mail}}</td>
+            <td>{{$item->age}}</td></tr>
+        @endforeach
+       
+
     </table>
 </form>
 
