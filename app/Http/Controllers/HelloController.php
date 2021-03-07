@@ -14,33 +14,21 @@ class HelloController extends Controller
 
     public function index(Request $request)
     {
-
-        $items = DB::select('select * from people');
+        $items = DB::table('people')->get();
         return view('hello.index', ['items' => $items]);
-
-        // if (isset($request->id))
-        // {
-        //     $param = ['id' => $request->id];
-        //     $items = DB::select('select * from people where id = :id', 
-        //     $param);
-        // } else {
-        //     $items = DB::select('select * from people');
-        // }
-        // return view('hello.index', ['items' => $items]);
-
     }
 
-    public function post(Request $request)
+    public function show(Request $request)
     {
-        $items = DB::select('select * from people');
-        return view('hello.index', ['items' => $items]);
+        $item = DB::table('people')->where('id', $request->id)->first();
+        return view('hello.show', [ 'item' => $item]);
     }
 
     public function add(Request $request)
     {
         return view('hello.add');
-    }
 
+    }
     public function create(Request $request)
     {
         $param = [
@@ -48,52 +36,35 @@ class HelloController extends Controller
             'mail' => $request->mail,
             'age' => $request->age,
         ];
-        DB::insert('insert into people (name, mail, age) values (:name, :mail, :age)', $param);
+        DB::table('people')->insert($param);
         return redirect('/hello');
-    }
-
-
-    public function message(Request $request)
-    {
-        return view('hello.message', ['msg' => 'フォームを入力：']);
-    }
-
-    public function error(Request $request)
-    {
-        return view('hello.error', ['msg' => 'フォームを入力：']);
     }
 
     public function edit(Request $request)
     {
-        $param = ['id' => $request->id];
-        $item = DB::select('select * from people where id = :id', $param);
-        return view('hello.edit', [ 'form' => $item[0]]);
+        $item = DB::table('people')->where('id', $request->id)->first();
+        return view('hello.edit', ['form' => $item]);
     }
 
     public function update(Request $request)
     {
         $param = [
-            'id' => $request->id,
             'name' => $request->name,
             'mail' => $request->mail,
             'age' => $request->age,
         ];
-        DB::update('update people set name = :name, mail = :mail, 
-        age = :age where id = :id' , $param);
+        DB::table('people')->where('id', $request->id)->update($param);
         return redirect('/hello');
     }
 
-    public function del(Request $request)
-    {
-        $param = ['id' => $request->id];
-        $item = DB::select('select * from people where id = :id', $param);
-        return view('hello/del',[ 'form' => $item[0]] );
+    public function del(Request $request){
+        $item = DB::table('people')->where('id', $request->id)->first();
+        return view('hello.del', ['form' => $item]);
     }
 
-    public function remove(Request $request)
-    {
-        $param = ['id' => $request->id];
-        DB::delete('delete from people where id = :id', $param);
+    public function remove(Request $request){
+        DB::table('people')->where('id', $request->id)->delete();
         return redirect('/hello');
+
     }
 }
