@@ -19,7 +19,7 @@ class Person extends Model
         //     $builder->where('age', '>', 20);
         // });
 
-        static::adGlobalScope(new ScopePerson());
+        static::addGlobalScope(new ScopePerson());
     }
 
 
