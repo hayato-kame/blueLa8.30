@@ -12,6 +12,7 @@ class PersonController extends Controller
     public function index(Request $request)
     {
         $items = Person::all();
+        
         return view('person.index', ['items' => $items]);
     }
 
@@ -44,6 +45,48 @@ class PersonController extends Controller
        return view('person.find', $param);
    }
 
-  
+   public function add(Request $request)
+   {
+       return view('person.add');
+   }
+
+   public function create(Request $request)
+   {
+       $param = [
+           'name' => $request->name,
+           'mail' => $request->mail,
+           'age' => $request->age,
+       ];
+
+       $person = new Person();
+       
+       unset($request->_token);
+
+       $person->fill($param)->save();
+       return redirect('/person');
+   }
+
+   public function edit(Request $request)
+   {
+       $id = $request->id;
+       $person = Person::find($id);
+       return view('person.edit', ['form' => $person]);
+   }
+
+   public function update(Request $request)
+   {
+       $this->validate($request, Person::$rules, Person::$messages);
+        $param = [
+            'name' => $request->name,
+            'mail' => $request->mail,
+            'age' => $request->age,
+        ];
+
+        
+       $id = $request->id;
+       $person = Person::find($id);
+       $person->fill($param)->save();
+       return redirect('/person');
+   }
     
 }

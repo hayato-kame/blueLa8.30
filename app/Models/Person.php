@@ -10,40 +10,58 @@ use App\Scopes\ScopePerson;
 class Person extends Model
 {
     use HasFactory;
-    
-    protected static function boot()
-    {
-        parent::boot();
 
-        // static::addGlobalScope('age', function (Builder $builder) {
-        //     $builder->where('age', '>', 20);
-        // });
+    protected $guarded = ['id'];
 
-        static::addGlobalScope(new ScopePerson());
-    }
+    public static $rules = [
+        'name' => [ 'required' ],
+        'mail' => [ 'email' ],
+        'age' => [ 'integer', 'min:0', 'max:150'],
+    ];
+
+    public static $messages = [
+        'name.required' => '名前は必ず入力してください',
+        'mail.email' => 'メールアドレスが必要です',
+        'age.integer' => '年齢は整数を入力してください',
+        'age.min' => '年齢は0以上の整数を入力してください',
+        'age.max' => '年齢は150以下の整数で入力してください',
+    ];
 
 
     public function getData()
     {
         return $this->id . ': ' . $this->name . ' (' . $this->age . ')';
     }
+    
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-    // 定義するときは、scopeをつけて、インスタンスメソッドとして定義する
-    public function scopeNameEqual($query, $str)
-    {
-        // return $query->where('name', 'like',  "%{$str}%");
-        return $query->where('name', 'like',  '%' . $str . '%');
-    }
+    //     // static::addGlobalScope('age', function (Builder $builder) {
+    //     //     $builder->where('age', '>', 20);
+    //     // });
 
-    public function scopeAgeGreaterThan($query, $n)
-{
-   return $query->where('age','>=', $n);
-}
+    //     static::addGlobalScope(new ScopePerson());
+    // }
 
-public function scopeAgeLessThan($query, $n)
-{
-   return $query->where('age', '<=', $n);
-}
+
+
+    // // 定義するときは、scopeをつけて、インスタンスメソッドとして定義する
+    // public function scopeNameEqual($query, $str)
+    // {
+    //     // return $query->where('name', 'like',  "%{$str}%");
+    //     return $query->where('name', 'like',  '%' . $str . '%');
+    // }
+
+    // public function scopeAgeGreaterThan($query, $n)
+    // {
+    // return $query->where('age','>=', $n);
+    // }
+
+    // public function scopeAgeLessThan($query, $n)
+    // {
+    // return $query->where('age', '<=', $n);
+    // }
 
 
     
