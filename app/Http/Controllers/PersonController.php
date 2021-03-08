@@ -22,11 +22,28 @@ class PersonController extends Controller
         return view('person.find', ['input' => $input]);
     }
 
-    public function search(Request $request)
-    {
-        $item = Person::find($request->input);
-        return view('person.find', ['item' => $item, 'input' => $request->input]);
+//    public function search(Request $request)
+//    {
+//       $item = Person::nameEqual( $request->input )->first();
+//       $param = [
+//           'item' => $item,
+//           'input' => $request->input,
+//       ];
 
-    }
+//       return view('person.find', $param);
+
+//    }
+
+   public function search(Request $request)
+   {
+       $min = $request->input * 1;
+       $max = $min + 10;
+       $item = Person::ageGreaterThan($min)->ageLessThan($max)->first();
+
+       $param = ['input' => $request->input, 'item' => $item];
+       return view('person.find', $param);
+   }
+
+  
     
 }
