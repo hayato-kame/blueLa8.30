@@ -82,11 +82,27 @@ class PersonController extends Controller
             'age' => $request->age,
         ];
 
-        
        $id = $request->id;
        $person = Person::find($id);
        $person->fill($param)->save();
        return redirect('/person');
    }
+
+
+   public function delete(Request $request)
+   {
+       $id = $request->id;
+       $person = Person::find($id);
+       return view('person.del', ['form' => $person]);
+   }
+
+   public function remove(Request $request){
+       $id = $request->id;
+       $person = Person::find($id);
+       $person->delete();
+       return redirect('/person'); 
+   }
+
+
     
 }
