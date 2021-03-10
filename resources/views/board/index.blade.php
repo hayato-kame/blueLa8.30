@@ -10,9 +10,9 @@
 @section('content')
 
     <table>
-        <tr><th>person_id</th><th>title</th></tr>
+        <tr><th>person_id</th><th>title</th><th>data</th></tr>
         @foreach($items as $item)
-        <tr><td>{{$item->person_id}}</td><td>{{$item->title}}</td></tr>
+        <tr><td>{{$item->person_id}}</td><td>{{$item->title}}</td><td>{{$item->getData()}}</td></tr>
         @endforeach
     </table>
 @endsection

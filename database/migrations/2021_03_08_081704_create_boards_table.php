@@ -20,7 +20,9 @@ class CreateBoardsTable extends Migration
             $table->string('message');
             $table->timestamps();
             // 外部キー制約必要
-            $table->foreign('person_id')->references('id')->on('people');
+            // $table->foreign('person_id')->references('id')->on('people');
+            // こうすると、参照元を消したときに、関連するこのテーブルのデータも一緒に消えます
+            $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
         });
 
     }

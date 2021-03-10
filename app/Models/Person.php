@@ -27,6 +27,18 @@ class Person extends Model
         'age.max' => '年齢は150以下の整数で入力してください',
     ];
 
+     // 単数形1:1
+    public function board() 
+    {
+        return $this->hasOne('App\Models\Board');
+    }
+
+    // 複数形のメソッドです
+    public function boards()
+    {
+        return $this->hasMany('App\Models\Board');
+    }
+
 
     public function getData()
     {
